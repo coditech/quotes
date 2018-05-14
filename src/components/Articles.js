@@ -7,8 +7,8 @@ export const Articles = (props) => {
   let quoteId;
 
   // check if quoteId is set
-  if(props.match.params.pageNumber){
-    quoteId = props.match.params.pageNumber
+  if(props.match.params.quoteId){
+    quoteId = props.match.params.quoteId
   }else{
     quoteId = 0
   }
