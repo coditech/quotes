@@ -10,14 +10,20 @@ export class Articles extends React.Component{
   onSubmit = (evt) => {
     evt.preventDefault()
     const form = evt.target
-    const quote = form.quote.value
     const author = form.author.value
-    const obj = {quote,author}
-    console.log('ok, it works')
-    //quotesList.push(obj);
-    //console.log(quotesList)
+    const quote = form.quote.value 
+    fetch('/add?author='+author+'&quote='+quote)
+      .then( response =>{
+        return response.json()
+      })
+      .then( data => {
+        if(data.status == 'ok'){
+          alert('new quote added')
+        }else if(data.error){
+          alert('Error: '+data.error)
+        }
+      })
   }
-
 
   componentDidMount(){
     fetch('/quotes')
@@ -26,9 +32,7 @@ export class Articles extends React.Component{
       })
       .then( data => {
         const quotesList = data.quotesList
-        setTimeout(()=>{
-          this.setState({ quotesList })
-        },3000)
+        this.setState({ quotesList })
       })
   }
 

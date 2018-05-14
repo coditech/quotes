@@ -11,7 +11,20 @@ const server = express();
 server
   .disable('x-powered-by')
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR))
-  .get('/quotes', (req, res)=>{
+  .get('/add', ( req, res ) => {
+    const author = req.query.author
+    const quote = req.query.quote
+    if(!quote){
+      return res.send({error:'quote is empty'})
+    }
+    if(!author){
+      return res.send({error:'author is empty'})
+    }
+    const obj = {author, quote}
+    quotesList.push(obj)
+    res.send({status:'ok'})
+  })
+  .get('/quotes', (req, res) => {
     res.send({quotesList})
   })
   .get('/*', (req, res) => {
