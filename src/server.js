@@ -3,6 +3,7 @@ import React from 'react';
 import { StaticRouter } from 'react-router-dom';
 import express from 'express';
 import { renderToString } from 'react-dom/server';
+import { quotesList } from './components/data'
 
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
 
@@ -10,6 +11,9 @@ const server = express();
 server
   .disable('x-powered-by')
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR))
+  .get('/quotes', (req, res)=>{
+    res.send({quotesList})
+  })
   .get('/*', (req, res) => {
     const context = {};
     const markup = renderToString(
