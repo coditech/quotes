@@ -1,23 +1,45 @@
 import React from 'react'
 import { PageTemplate } from './PageTemplate'
-import { quotesList } from './data'
-
-fetch('/quotes')
-  .then( response =>{
-    return response.json()
-  })
-  .then( data => {
-    console.log(data)
-  })
 
 export class Articles extends React.Component{
-  componentDidMount(){
-    // load the articles
+
+  state = {
+    quotesList:[]
   }
+  
+  onSubmit = (evt) => {
+    evt.preventDefault()
+    const form = evt.target
+    const quote = form.quote.value
+    const author = form.author.value
+    const obj = {quote,author}
+    console.log('ok, it works')
+    //quotesList.push(obj);
+    //console.log(quotesList)
+  }
+
+
+  componentDidMount(){
+    fetch('/quotes')
+      .then( response =>{
+        return response.json()
+      })
+      .then( data => {
+        const quotesList = data.quotesList
+        setTimeout(()=>{
+          this.setState({ quotesList })
+        },3000)
+      })
+  }
+
   render(){
 
+    if(this.state.quotesList.length === 0){
+      return <div>loading...</div>
+    }
+
     let quoteId;
-    
+
     // check if quoteId is set
     if(this.props.match.params.quoteId){
       quoteId = this.props.match.params.quoteId
@@ -28,25 +50,15 @@ export class Articles extends React.Component{
     quoteId = parseInt(quoteId,10)
     
     // check if quoteId is valid
-    if(isNaN(quoteId) || quoteId < 0 || quoteId >= quotesList.length){
+    if(isNaN(quoteId) || quoteId < 0 || quoteId >= this.state.quotesList.length){
       return <div>this is not a valid page number</div>
     }
-  
-    // quoteId is valid, load quote
-    const quote = quotesList[quoteId]
-  
-    return <ArticlesPage quote={quote} pageNumber={quoteId}/>
-  }
-}
 
-const onSubmit = (evt) => {
-  evt.preventDefault()
-  const form = evt.target
-  const quote = form.quote.value
-  const author = form.author.value
-  const obj = {quote,author}
-  quotesList.push(obj);
-  console.log(quotesList)
+    // quoteId is valid, load quote
+    const quote = this.state.quotesList[quoteId]
+  
+    return <ArticlesPage onSubmit={this.onSubmit} quote={quote} pageNumber={quoteId}/>
+  }
 }
 
 export const ArticlesPage = (props) => (
@@ -54,7 +66,7 @@ export const ArticlesPage = (props) => (
     <div>
       <h4>{ props.quote.author }</h4>
       <p>{ props.quote.quote }</p>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={props.onSubmit}>
         <input placeholder="quote" name="quote"/>
         <input placeholder="author" name="author"/>
         <input type="submit" value="ok"/>
