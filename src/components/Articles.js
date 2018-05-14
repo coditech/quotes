@@ -1,22 +1,30 @@
 import React from 'react'
 import { PageTemplate } from './PageTemplate'
+import { quotes } from './data'
 
 export const Articles = (props) => {
-  
-  let x;
+
+  let quoteId;
+
+  // check if quoteId is set
   if(props.match.params.pageNumber){
-    x = props.match.params.pageNumber
+    quoteId = props.match.params.pageNumber
   }else{
-    x = 0
+    quoteId = 0
   }
   
-  x = parseInt(x,10)
+  quoteId = parseInt(quoteId,10)
   
-  if(isNaN(x)){
+  // check if quoteId is valid
+  if(isNaN(quoteId) || quoteId < 0 || quoteId >= quotes.length){
     return <div>this is not a valid page number</div>
   }
-  
-  return <ArticlesPage pageNumber={x}/>
+
+  // quoteId is valid, load quote
+  const quote = quotes[quoteId]
+  console.log(quote)
+
+  return <ArticlesPage pageNumber={quoteId}/>
 }
 
 export const ArticlesPage = (props) => (
