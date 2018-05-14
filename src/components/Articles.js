@@ -1,6 +1,6 @@
 import React from 'react'
 import { PageTemplate } from './PageTemplate'
-import { quotes } from './data'
+import { quotesList } from './data'
 
 export const Articles = (props) => {
 
@@ -21,16 +21,16 @@ export const Articles = (props) => {
   }
 
   // quoteId is valid, load quote
-  const quote = quotes[quoteId]
-  console.log(quote)
+  const quote = quotesList[quoteId]
 
-  return <ArticlesPage pageNumber={quoteId}/>
+  return <ArticlesPage quote={quote} pageNumber={quoteId}/>
 }
 
 export const ArticlesPage = (props) => (
   <PageTemplate header="Articles">
     <div>
-      the articles page {props.pageNumber}
+      <h4>{ props.quote.author }</h4>
+      <p>{ props.quote.quote }</p>
     </div>
   </PageTemplate>
 )
