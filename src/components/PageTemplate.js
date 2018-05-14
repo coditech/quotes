@@ -1,14 +1,14 @@
 import React from 'react'
 
-export const PageTemplate = (props) => (
+export const PageTemplate = ({ header, children }) => (
   <div>
     <nav>
       my beautiful website
     </nav>
-    <h1>{ props.header }</h1>
+    <h1>{ header }</h1>
     <hr/>
     <main>
-      { props.children }
+      { children }
     </main>
   </div>
 )
