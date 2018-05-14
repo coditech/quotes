@@ -10,28 +10,33 @@ fetch('/quotes')
     console.log(data)
   })
 
-export const Articles = (props) => {
-
-  let quoteId;
-
-  // check if quoteId is set
-  if(props.match.params.quoteId){
-    quoteId = props.match.params.quoteId
-  }else{
-    quoteId = 0
+export class Articles extends React.Component{
+  componentDidMount(){
+    // load the articles
   }
+  render(){
+
+    let quoteId;
+    
+    // check if quoteId is set
+    if(this.props.match.params.quoteId){
+      quoteId = this.props.match.params.quoteId
+    }else{
+      quoteId = 0
+    }
+    
+    quoteId = parseInt(quoteId,10)
+    
+    // check if quoteId is valid
+    if(isNaN(quoteId) || quoteId < 0 || quoteId >= quotesList.length){
+      return <div>this is not a valid page number</div>
+    }
   
-  quoteId = parseInt(quoteId,10)
+    // quoteId is valid, load quote
+    const quote = quotesList[quoteId]
   
-  // check if quoteId is valid
-  if(isNaN(quoteId) || quoteId < 0 || quoteId >= quotesList.length){
-    return <div>this is not a valid page number</div>
+    return <ArticlesPage quote={quote} pageNumber={quoteId}/>
   }
-
-  // quoteId is valid, load quote
-  const quote = quotesList[quoteId]
-
-  return <ArticlesPage quote={quote} pageNumber={quoteId}/>
 }
 
 const onSubmit = (evt) => {
