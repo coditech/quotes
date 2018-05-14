@@ -17,7 +17,7 @@ export class Articles extends React.Component{
         return response.json()
       })
       .then( data => {
-        if(data.status == 'ok'){
+        if(data.status === 'ok'){
           alert('new quote added')
         }else if(data.error){
           alert('Error: '+data.error)
